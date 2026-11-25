@@ -1,0 +1,12 @@
+# Pin exact versions once everything works on your laptop (run: pip freeze) so deployment in Feb is smooth.
+flask
+python-dotenv
+numpy
+librosa
+soundfile
+pytest
+# Add when you reach those steps (Role 2 / Role 3):
+# torch
+# transformers
+# faster-whisper
+# phonemizer        (also needs espeak-ng installed on the OS)
