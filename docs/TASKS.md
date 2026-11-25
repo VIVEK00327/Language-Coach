@@ -22,8 +22,8 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 ## R1: Lead / integration
 | ID | Task | Week | Needs | Status |
 |---|---|---|---|---|
-| R1-01 | Create GitHub repo, push scaffold, add all members, protect `main`; each member creates own `.env` from `.env.example` | W1 | - | TODO |
-| R1-02 | Run README quick start, confirm mock demo works; share TASKS/GUIDELINES; 30-min kickoff | W1 | R1-01 | TODO |
+| R1-01 | Create GitHub repo, push scaffold, add all members, protect `main`; each member creates own `.env` from `.env.example` | W1 | - | DONE (2026-11-25) |
+| R1-02 | Run README quick start, confirm mock demo works; share TASKS/GUIDELINES; 30-min kickoff | W1 | R1-01 | DONE (2026-11-25) |
 | R1-03 | Set daily check-in + Sunday merge routine; confirm timeline and review date with guide, update MEMORY | W1 | - | TODO |
 | R1-04 | Review/merge first PRs, keep `main` green | W2 | R1-01 | TODO |
 | R1-05 | Wire real recognizer and reference into `pipeline.py` | W2 | R2-04, R3-02 | TODO |
