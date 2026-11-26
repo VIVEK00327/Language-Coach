@@ -62,8 +62,15 @@ Sanskrit: no off-the-shelf ASR or datasets; do not train one. Rule-based G2P is 
 aspiration, retroflex vs dental, anusvara, visarga). State the approximation honestly in the report. Reference audio: record
 a teacher/friend. R5 verifies Sanskrit data availability in Week 1.
 Content files: `data/content/<language>.json` with `levels: {beginner, intermediate, advanced}` of `{text, note?}`.
-Targets: 20+ items per language by 30 Nov, 100+ later.
-Datasets to evaluate (verify license/availability): speechocean762 (human scores), L2-ARCTIC, Common Voice, own recordings.
+Targets: 20+ items per language by 30 Nov (completed), 100+ later.
+
+### Datasets for Evaluation
+| Dataset | Target Languages | Primary Purpose | Status / Licensing |
+|---|---|---|---|
+| **speechocean762** | English (non-native learners) | Benchmark scoring algorithm against expert human pronunciation ratings (phoneme, word, utterance scores) | OpenSLR / Hugging Face *(verify license and availability)* |
+| **L2-ARCTIC** | English (native speakers of Hindi, Spanish, Mandarin, etc.) | Test phonetic substitution and deletion detection across diverse L1 mother-tongue accents | Non-commercial research *(verify license and availability)* |
+| **Mozilla Common Voice** | English, French, Hindi | Test acoustic model robustness on diverse speakers, accents, and recording conditions | CC0 Public Domain *(verify license and availability)* |
+| **Sanskrit Corpora** | Sanskrit | Evaluate classical pronunciation, sandhi, and chanting | **Unknown / Scarce** *(evaluate empirical recordings from Sanskrit teachers)* |
 
 ## 6. Stack
 Python 3.10+, Flask + HTML/CSS/JS, SQLite, Librosa/soundfile, Whisper (faster-whisper) and a pretrained wav2vec2/XLS-R

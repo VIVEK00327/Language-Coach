@@ -45,4 +45,4 @@ Blocked: (anything stopping you — tag the person)
 (empty)
 
 ## R5 log
-(empty)
+2026-11-26 | R5-01, R5-02, R5-03, R5-04, R5-05, R5-07, R5-09 | Populated 22+ items across beginner/intermediate/advanced levels for English, Hindi, Sanskrit, French in `data/content/*.json` with native-speaker verification notes. Created `docs/report/report_outline.md` and `docs/report/architecture.md` (with system and sequence Mermaid diagrams). Compiled 10-topic literature review in `docs/report/literature_survey.md` marked [TO VERIFY]. Documented evaluation datasets in PRD Section 5 and `scripts/download_data.md`. Built `evaluation/smoke_test.py` for automated CLI pipeline tests on raw audio. | data/content/*.json, docs/report/*, docs/PRD.md, scripts/download_data.md, evaluation/smoke_test.py, tests/test_content.py | R4 UI tasks next (R4-03, R4-04)

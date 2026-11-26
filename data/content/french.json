@@ -1,1 +1,34 @@
-{"language": "french", "levels": {"beginner": [{"text": "bonjour"}, {"text": "merci"}], "intermediate": [], "advanced": []}}
+{
+  "language": "french",
+  "note": "French list must be checked by a native speaker or teacher. Targets nasal vowels (an/en, in/ain, on, un), the uvular fricative /ʁ/, close-front rounded vowels /y/ vs /u/, and liaisons.",
+  "levels": {
+    "beginner": [
+      {"text": "bonjour"},
+      {"text": "merci"},
+      {"text": "eau"},
+      {"text": "vin"},
+      {"text": "pain"},
+      {"text": "rouge"},
+      {"text": "soleil"},
+      {"text": "grenouille"},
+      {"text": "fenêtre"},
+      {"text": "voyage"}
+    ],
+    "intermediate": [
+      {"text": "un bon vin blanc"},
+      {"text": "les poissons rouges nagent vite"},
+      {"text": "je voudrais un croissant s'il vous plaît"},
+      {"text": "le vent d'hiver souffle très fort"},
+      {"text": "nous allons à la gare centrale"},
+      {"text": "il fait un temps magnifique aujourd'hui"},
+      {"text": "elle parle le français couramment"}
+    ],
+    "advanced": [
+      {"text": "un chasseur sachant chasser sait chasser sans son chien"},
+      {"text": "les chaussettes de l'archiduchesse sont-elles sèches archisèches"},
+      {"text": "si six scies scient six cyprès six cents scies scient six cents cyprès"},
+      {"text": "panier piano piano panier"},
+      {"text": "ces six saucissons-secs-ci sont si secs qu'on ne sait si c'en sont"}
+    ]
+  }
+}

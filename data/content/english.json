@@ -1,1 +1,34 @@
-{"language": "english", "levels": {"beginner": [{"text": "water"}, {"text": "ship"}, {"text": "think"}], "intermediate": [], "advanced": []}}
+{
+  "language": "english",
+  "note": "English practice dataset covering key phonetic contrasts (th, sh, v/w, vowel contrasts).",
+  "levels": {
+    "beginner": [
+      {"text": "water"},
+      {"text": "ship"},
+      {"text": "think"},
+      {"text": "vine"},
+      {"text": "wine"},
+      {"text": "that"},
+      {"text": "three"},
+      {"text": "sheep"},
+      {"text": "cheap"},
+      {"text": "measure"}
+    ],
+    "intermediate": [
+      {"text": "red lorry yellow lorry"},
+      {"text": "fresh fried fish"},
+      {"text": "she sells sea shells"},
+      {"text": "thin things think"},
+      {"text": "very weary warriors"},
+      {"text": "voice and choice"},
+      {"text": "pleasant spring weather"}
+    ],
+    "advanced": [
+      {"text": "The thirty three thieves thought that they thrilled the throne"},
+      {"text": "Which wristwatches are Swiss wristwatches"},
+      {"text": "She sells seashells by the seashore"},
+      {"text": "The sixth sick sheikhs sixth sheep is sick"},
+      {"text": "Through tough thorough thought they prevailed"}
+    ]
+  }
+}

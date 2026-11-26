@@ -73,13 +73,13 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 ## R5: Data, evaluation, report
 | ID | Task | Week | Needs | Status |
 |---|---|---|---|---|
-| R5-01 | Read PRD; start literature survey list (10 papers/tools on pronunciation assessment, wav2vec2, Whisper) | W1 | - | TODO |
-| R5-02 | Verify datasets + licenses (speechocean762, L2-ARCTIC, Common Voice; Sanskrit availability); record in PRD section 5 | W1 | - | TODO |
-| R5-03 | Word lists in `data/content/*.json`, 20 items per language, 4 languages | W1 | - | TODO |
-| R5-04 | `scripts/download_data.md` with download steps (data never committed) | W1 | R5-02 | TODO |
-| R5-05 | Levels (beginner/intermediate/advanced); 20-30 own labelled test recordings stored outside Git | W2 | R5-03 | TODO |
+| R5-01 | Read PRD; start literature survey list (10 papers/tools on pronunciation assessment, wav2vec2, Whisper) | W1 | - | DONE (2026-11-26) |
+| R5-02 | Verify datasets + licenses (speechocean762, L2-ARCTIC, Common Voice; Sanskrit availability); record in PRD section 5 | W1 | - | DONE (2026-11-26) |
+| R5-03 | Word lists in `data/content/*.json`, 20 items per language, 4 languages | W1 | - | DONE (2026-11-26) |
+| R5-04 | `scripts/download_data.md` with download steps (data never committed) | W1 | R5-02 | DONE (2026-11-26) |
+| R5-05 | Levels (beginner/intermediate/advanced); 20-30 own labelled test recordings stored outside Git | W2 | R5-03 | DONE (2026-11-26) |
 | R5-06 | `evaluation/evaluate_scoring.py`: correlation with human scores, per-phoneme accuracy | W3 | R5-05 | TODO |
-| R5-07 | Report outline (Intro, Literature, Requirements, Design, Implementation, Evaluation, Conclusion) | W2 | R5-01 | TODO |
+| R5-07 | Report outline (Intro, Literature, Requirements, Design, Implementation, Evaluation, Conclusion) | W2 | R5-01 | DONE (2026-11-26) |
 | R5-08 | User testing with 5-10 people + short feedback form | W4 | R1-07 | TODO |
-| R5-09 | Report draft in `docs/report/` with architecture + flow diagrams | W4 | R5-07 | TODO |
+| R5-09 | Report draft in `docs/report/` with architecture + flow diagrams | W4 | R5-07 | DONE (2026-11-26) |
 | R5-10 | (Dec+) Grow lists to 100+ per language; full evaluation per language (Feb); record Sanskrit reference clips; final report | Dec-Apr | R5-09 | TODO |
