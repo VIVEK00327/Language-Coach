@@ -3,11 +3,27 @@
 > Format of an entry: `YYYY-MM-DD | task ID | what was done | files touched | next / blockers`
 
 ## STATUS (R1 only edits this block)
-- Phase: Setup, Week 1 (Nov 2026). Completion: ~5% (scaffold + mock pipeline verified).
-- Works now: mock pipeline end to end (mock reference + mock recognizer + real alignment scorer), Flask starter app, tests.
-- Not started: real recognizer, real reference phonemes, real UI, dashboard, datasets, report.
-- Open questions: (1) synopsis says Nov-Apr but team said 3-4 months: confirm with guide. (2) exact date of the 30-40% review.
-- Dataset/audio locations (never in Git): _fill in_
+- Phase: November Milestone Review (30-40% progress checkpoint). Completion: ~35%.
+  Reason: System architecture, decoupled ML pipeline contracts, audio preprocessing (16 kHz, silence trimming, normalisation), real eSpeak NG IPA reference generation, weighted phonetic similarity scoring, multi-word attribution, per-stage timing telemetry, 4-language practice curricula (88+ items), automated smoke test suite, literature survey, 2-minute demo script, 7-slide review deck, and user testing protocol are completed and verified with 24 passing tests.
+- Works now:
+  - Audio preprocessing (`ml/speech/audio_utils.py`): 16 kHz resample, mono mix, top_db=30 silence trim, peak normalisation.
+  - Reference phonemes (`ml/reference/reference_phonemes.py`): Real IPA extraction via phonemizer + eSpeak NG (en-us, fr-fr, hi).
+  - Scoring & feedback (`ml/scoring/scorer.py`): Weighted substitution costs (0.5 credit for voicing/sibilant/vowel near-misses), per-word attribution, actionable advice ("You said /s/ in 'ship'; expected /ʃ/").
+  - Pipeline telemetry (`ml/pipeline.py`): Per-stage timing logs at INFO level and `timing` dictionary (`reference_sec`, `recognizer_sec`, `scoring_sec`, `total_sec`) returned in `/api/assess`.
+  - Smoke testing (`evaluation/smoke_test.py`): CLI automated pipeline evaluation across local .wav audio clips.
+  - Curricula: 22+ items across 3 tiers (beginner, intermediate, advanced) in `data/content/` for English, Hindi, Sanskrit, French.
+  - Documentation: `docs/report/` containing `report_outline.md`, `architecture.md` (Mermaid diagrams), `literature_survey.md` (10 topics [TO VERIFY]), `demo_script.md` (2-minute script), `review_slides.md` (7 slides), and `user_testing.md` (survey & testing script).
+- What is mock or fallback:
+  - Speech recognizer (`ml/speech/recognizer.py`): Mock phoneme emission is active fallback (`USE_MOCK_ML=1`) pending neural model integration.
+  - Sanskrit reference: Temporary fallback mapping to Hindi eSpeak G2P; custom rule-based G2P planned for January.
+  - Web UI frontend: Interactive practice page with in-browser AudioContext 16 kHz WAV encoding is next in queue (R4-03, R4-04).
+- Known problems:
+  - Sanskrit lacks off-the-shelf acoustic models and corpora; empirical recordings and rule-based phonetic decomposition required.
+  - Neural models (wav2vec 2.0 / Whisper) must be evaluated for CPU RAM and latency constraints on consumer laptops.
+- Next three tasks after review:
+  1. R4-03 + R4-04: Practice web UI (in-browser 16 kHz mono WAV conversion, speech synthesis audio playback, assess loading state).
+  2. R2-04: Real English phoneme recognizer using pretrained wav2vec 2.0 on CPU with singleton model caching.
+  3. R3-03: Phoneme symbol mapping between recognizer output and eSpeak reference in `ml/reference/PHONEME_MAP.md`.
 
 ### Daily check-in (post in group chat by 10 pm)
 ```
@@ -33,6 +49,7 @@ Blocked: (anything stopping you — tag the person)
 2026-11-04 | SETUP | repo scaffold, docs, contract, mock pipeline, tests | whole repo | each role starts its Week 1 tasks in TASKS.md
 2026-11-25 | R1-01, R1-02 | Repo created and pushed to GitHub. Installed deps, ran pytest (6/6 pass). Started app with USE_MOCK_ML=1, verified GET /api/languages (4 langs), GET /api/content/english (3 beginner words), POST /api/assess with text=hello+language=english returns per-phoneme scores and feedback. Mock pipeline confirmed end to end. | docs/TASKS.md, docs/MEMORY.md | R1-03: set daily check-in + Sunday merge; all roles start W1 tasks
 2026-11-25 | R1-03 | Drafted team routine: daily check-in template (done/doing/blocked), Sunday merge checklist (6 steps: pull, merge, pytest, smoke-test, update STATUS, post summary), and 3 questions for guide (end date, review date, review deliverables). All saved under STATUS in MEMORY.md. | docs/MEMORY.md, docs/TASKS.md | R1-04: review/merge first PRs; ask guide the 3 questions
+2026-11-26 | R1-07, R1-08, R1-09 | Added stage timing telemetry (reference_sec, recognizer_sec, scoring_sec, total_sec) at INFO level and in /api/assess timing response. Pinned requirements.txt and audited .gitignore (models, data/raw, .cache). Rebuilt clean UTF-8 README.md. Authored 2-min demo script (`docs/report/demo_script.md`), 7-slide review deck (`docs/report/review_slides.md`), and updated STATUS for 35% review checkpoint. 24/24 tests pass. | ml/contracts.py, ml/pipeline.py, README.md, requirements.txt, .gitignore, docs/report/*, docs/TASKS.md, docs/MEMORY.md | R4 UI tasks next (R4-03, R4-04)
 
 ## R2 log
 2026-11-26 | R2-01, R2-02 | Built `ml/speech/audio_utils.py` with `load_audio` (16 kHz mono conversion via soundfile + librosa resample), `trim_silence` (librosa top_db=30), and `normalise` (peak scaling). Created `scripts/record_clip.py` to record mic clips into data/raw/ using sounddevice. Added comprehensive unit tests with synthetic sine waves in `tests/test_audio_utils.py`, all 20 project tests pass. | ml/speech/audio_utils.py, scripts/record_clip.py, tests/test_audio_utils.py, docs/TASKS.md | R2-04 next: real English phoneme recognizer
@@ -45,4 +62,4 @@ Blocked: (anything stopping you — tag the person)
 (empty)
 
 ## R5 log
-2026-11-26 | R5-01, R5-02, R5-03, R5-04, R5-05, R5-07, R5-09 | Populated 22+ items across beginner/intermediate/advanced levels for English, Hindi, Sanskrit, French in `data/content/*.json` with native-speaker verification notes. Created `docs/report/report_outline.md` and `docs/report/architecture.md` (with system and sequence Mermaid diagrams). Compiled 10-topic literature review in `docs/report/literature_survey.md` marked [TO VERIFY]. Documented evaluation datasets in PRD Section 5 and `scripts/download_data.md`. Built `evaluation/smoke_test.py` for automated CLI pipeline tests on raw audio. | data/content/*.json, docs/report/*, docs/PRD.md, scripts/download_data.md, evaluation/smoke_test.py, tests/test_content.py | R4 UI tasks next (R4-03, R4-04)
+2026-11-26 | R5-01, R5-02, R5-03, R5-04, R5-05, R5-07, R5-08, R5-09 | Populated 22+ items across beginner/intermediate/advanced levels for English, Hindi, Sanskrit, French in `data/content/*.json` with native-speaker verification notes. Created `docs/report/report_outline.md` and `docs/report/architecture.md` (with system and sequence Mermaid diagrams). Compiled 10-topic literature review in `docs/report/literature_survey.md` marked [TO VERIFY]. Documented evaluation datasets in PRD Section 5 and `scripts/download_data.md`. Built `evaluation/smoke_test.py` and created `docs/report/user_testing.md` (6-question survey & 5-min protocol). | data/content/*.json, docs/report/*, docs/PRD.md, scripts/download_data.md, evaluation/smoke_test.py, tests/test_content.py | R4 UI tasks next (R4-03, R4-04)

@@ -1,13 +1,18 @@
-# Pin exact versions once everything works on your laptop (run: pip freeze) so deployment in Feb is smooth.
-flask
-python-dotenv
-numpy
-librosa
-soundfile
-pytest
-# Add when you reach those steps (Role 2 / Role 3):
+# Pinned dependencies for local execution on Windows/Linux CPU
+Flask==3.1.2
+python-dotenv==1.2.4
+numpy==2.2.6
+librosa==1.0.1
+soundfile==0.14.0
+pytest==9.2.0
+phonemizer==3.6.0
+sounddevice==0.5.3
+
+# System requirements (external):
+# - eSpeak NG installed on host OS and added to PATH (or PHONEMIZER_ESPEAK_LIBRARY set)
+# - Microphone hardware for audio capture
+
+# Optional / Future phases:
 # torch
 # transformers
 # faster-whisper
-sounddevice       # for scripts/record_clip.py
-phonemizer        # also needs espeak-ng installed on the OS

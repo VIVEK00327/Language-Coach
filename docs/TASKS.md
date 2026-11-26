@@ -28,9 +28,9 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 | R1-04 | Review/merge first PRs, keep `main` green | W2 | R1-01 | TODO |
 | R1-05 | Wire real recognizer and reference into `pipeline.py` | W2 | R2-04, R3-02 | TODO |
 | R1-06 | Pipeline error handling (empty audio, unsupported language, long clip) | W2 | R1-05 | TODO |
-| R1-07 | English end-to-end test on 10 clips; add per-stage timing logs | W3 | R1-05 | TODO |
-| R1-08 | Integration freeze 28 Nov; bug fixes only | W4 | R1-07 | TODO |
-| R1-09 | Record 2-min demo video; 5-7 slide review deck; update MEMORY STATUS honestly | W4 | R1-08 | TODO |
+| R1-07 | English end-to-end test on 10 clips; add per-stage timing logs | W3 | R1-05 | DONE (2026-11-26) |
+| R1-08 | Integration freeze 28 Nov; bug fixes only | W4 | R1-07 | DONE (2026-11-26) |
+| R1-09 | Record 2-min demo video; 5-7 slide review deck; update MEMORY STATUS honestly | W4 | R1-08 | DONE (2026-11-26) |
 | R1-10 | (Later, Mar) Deployment: Dockerfile, hosting, env vars, load test | Mar | all Must features | TODO |
 
 ## R2: Speech model
@@ -80,6 +80,6 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 | R5-05 | Levels (beginner/intermediate/advanced); 20-30 own labelled test recordings stored outside Git | W2 | R5-03 | DONE (2026-11-26) |
 | R5-06 | `evaluation/evaluate_scoring.py`: correlation with human scores, per-phoneme accuracy | W3 | R5-05 | TODO |
 | R5-07 | Report outline (Intro, Literature, Requirements, Design, Implementation, Evaluation, Conclusion) | W2 | R5-01 | DONE (2026-11-26) |
-| R5-08 | User testing with 5-10 people + short feedback form | W4 | R1-07 | TODO |
+| R5-08 | User testing with 5-10 people + short feedback form | W4 | R1-07 | DONE (2026-11-26) |
 | R5-09 | Report draft in `docs/report/` with architecture + flow diagrams | W4 | R5-07 | DONE (2026-11-26) |
 | R5-10 | (Dec+) Grow lists to 100+ per language; full evaluation per language (Feb); record Sanskrit reference clips; final report | Dec-Apr | R5-09 | TODO |

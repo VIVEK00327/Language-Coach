@@ -1,7 +1,7 @@
 """Shared data contract. Every ML module and the web app use these types.
 Do not change without telling the lead (Role 1) and updating docs/PRD.md (section 4)."""
 from dataclasses import dataclass, field, asdict
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 
 @dataclass
@@ -25,6 +25,7 @@ class AssessmentResult:
     overall_score: float      # 0-100
     words: List[WordResult] = field(default_factory=list)
     feedback: List[str] = field(default_factory=list)
+    timing: Dict[str, float] = field(default_factory=dict)
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
