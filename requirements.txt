@@ -9,4 +9,5 @@ pytest
 # torch
 # transformers
 # faster-whisper
+sounddevice       # for scripts/record_clip.py
 phonemizer        # also needs espeak-ng installed on the OS

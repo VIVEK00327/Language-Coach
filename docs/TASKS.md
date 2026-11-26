@@ -36,8 +36,8 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 ## R2: Speech model
 | ID | Task | Week | Needs | Status |
 |---|---|---|---|---|
-| R2-01 | Learn: waveform, 16 kHz, spectrogram/MFCC, phonemes, wav2vec2 vs Whisper; run repo with mock | W1 | - | TODO |
-| R2-02 | `ml/speech/audio_utils.py`: load at 16 kHz, trim silence, normalise | W1 | - | TODO |
+| R2-01 | Learn: waveform, 16 kHz, spectrogram/MFCC, phonemes, wav2vec2 vs Whisper; run repo with mock | W1 | - | DONE (2026-11-26) |
+| R2-02 | `ml/speech/audio_utils.py`: load at 16 kHz, trim silence, normalise | W1 | - | DONE (2026-11-26) |
 | R2-03 | Try Whisper tiny/base on 5 own recordings; note speed + accuracy | W1 | R2-02 | TODO |
 | R2-04 | Real `recognize_phonemes` for English with a pretrained phoneme model on CPU; mock stays as fallback (`USE_MOCK_ML=1`) | W2 | R2-02 | TODO |
 | R2-05 | Compare 2 candidate models on speed/accuracy; record result in PRD section 9 | W2 | R2-04 | TODO |

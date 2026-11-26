@@ -38,11 +38,10 @@
 - Keep commits small: `R3: add weighted substitution costs`.
 
 ## 6. Git workflow
-`main` always runs. One branch per task: `r3/weighted-scoring`. Open a PR; lead merges (at least twice a week, Sunday full merge).
+While only one person works: commit directly to `main`. Switch back to branches + PRs when teammates start.
 ```bash
-git checkout main && git pull && git checkout -b r2/english-recognizer
 git add -A && git status        # confirm no .env/data staged
-git commit -m "R2: real English phoneme recognizer" && git push -u origin HEAD
+git commit -m "R2: real English phoneme recognizer" && git push
 ```
 Docs conflicts: each role edits only its own TASKS table and its own MEMORY log section, so merges stay clean.
 

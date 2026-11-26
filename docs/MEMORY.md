@@ -35,7 +35,7 @@ Blocked: (anything stopping you — tag the person)
 2026-11-25 | R1-03 | Drafted team routine: daily check-in template (done/doing/blocked), Sunday merge checklist (6 steps: pull, merge, pytest, smoke-test, update STATUS, post summary), and 3 questions for guide (end date, review date, review deliverables). All saved under STATUS in MEMORY.md. | docs/MEMORY.md, docs/TASKS.md | R1-04: review/merge first PRs; ask guide the 3 questions
 
 ## R2 log
-(empty)
+2026-11-26 | R2-01, R2-02 | Built `ml/speech/audio_utils.py` with `load_audio` (16 kHz mono conversion via soundfile + librosa resample), `trim_silence` (librosa top_db=30), and `normalise` (peak scaling). Created `scripts/record_clip.py` to record mic clips into data/raw/ using sounddevice. Added comprehensive unit tests with synthetic sine waves in `tests/test_audio_utils.py`, all 20 project tests pass. | ml/speech/audio_utils.py, scripts/record_clip.py, tests/test_audio_utils.py, docs/TASKS.md | R2-04 next: real English phoneme recognizer
 
 ## R3 log
 2026-11-26 | R3-01, R3-02 | Installed espeak-ng (Windows MSI) + phonemizer pip package. Rewrote `get_reference_phonemes` to call phonemizer with espeak backend for real IPA output (e.g. "hello" → `h ə l oʊ`). Mock fallback preserved via `USE_MOCK_ML=1`. Added `_LANG_MAP` for en-us, hi, fr-fr; Sanskrit mapped to hi as placeholder. Tested English, French, Hindi — all return valid IPA. 7 new tests in `test_reference.py`, 13/13 pass. | ml/reference/reference_phonemes.py, tests/test_reference.py, docs/TASKS.md | R3-03 next (phoneme mapping); R2-02 unblocked
