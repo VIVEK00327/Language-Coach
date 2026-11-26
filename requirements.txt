@@ -9,4 +9,4 @@ pytest
 # torch
 # transformers
 # faster-whisper
-# phonemizer        (also needs espeak-ng installed on the OS)
+phonemizer        # also needs espeak-ng installed on the OS
