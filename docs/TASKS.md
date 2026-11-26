@@ -49,8 +49,8 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 ## R3: Reference phonemes + scoring
 | ID | Task | Week | Needs | Status |
 |---|---|---|---|---|
-| R3-01 | Learn IPA, G2P, edit distance; read `ml/scoring/scorer.py`; install espeak-ng + phonemizer | W1 | - | TODO |
-| R3-02 | Real `get_reference_phonemes` for English (phonemizer+espeak-ng); check French and Hindi | W2 | R3-01 | TODO |
+| R3-01 | Learn IPA, G2P, edit distance; read `ml/scoring/scorer.py`; install espeak-ng + phonemizer | W1 | - | DONE (2026-11-26) |
+| R3-02 | Real `get_reference_phonemes` for English (phonemizer+espeak-ng); check French and Hindi | W2 | R3-01 | DONE (2026-11-26) |
 | R3-03 | Phoneme symbol mapping between recognizer and reference; document in `ml/reference/PHONEME_MAP.md` | W2 | R3-02, R2-04 (mock ok) | TODO |
 | R3-04 | Weighted scoring (similar sounds cost less), per-word scores, overall 0-100 | W3 | R3-03 | TODO |
 | R3-05 | Readable feedback text ("You said /s/, expected /ʃ/") | W3 | R3-04 | TODO |
