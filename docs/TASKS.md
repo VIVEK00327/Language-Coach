@@ -52,8 +52,8 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 | R3-01 | Learn IPA, G2P, edit distance; read `ml/scoring/scorer.py`; install espeak-ng + phonemizer | W1 | - | DONE (2026-11-26) |
 | R3-02 | Real `get_reference_phonemes` for English (phonemizer+espeak-ng); check French and Hindi | W2 | R3-01 | DONE (2026-11-26) |
 | R3-03 | Phoneme symbol mapping between recognizer and reference; document in `ml/reference/PHONEME_MAP.md` | W2 | R3-02, R2-04 (mock ok) | TODO |
-| R3-04 | Weighted scoring (similar sounds cost less), per-word scores, overall 0-100 | W3 | R3-03 | TODO |
-| R3-05 | Readable feedback text ("You said /s/, expected /ʃ/") | W3 | R3-04 | TODO |
+| R3-04 | Weighted scoring (similar sounds cost less), per-word scores, overall 0-100 | W3 | R3-03 | DONE (2026-11-26) |
+| R3-05 | Readable feedback text ("You said /s/, expected /ʃ/") | W3 | R3-04 | DONE (2026-11-26) |
 | R3-06 | Compare scores with speechocean762 human scores with R5 (correlation) | W3 | R3-04, R5-06 | TODO |
 | R3-07 | Freeze English scoring, edge-case tests (empty, extra, missing); write scoring section for report | W4 | R3-05 | TODO |
 | R3-08 | (Dec+) Hindi/French rules; Sanskrit rule-based G2P (Jan); optional learned scorer; feedback wording | Dec-Feb | R3-07 | TODO |

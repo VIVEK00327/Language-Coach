@@ -39,6 +39,7 @@ Blocked: (anything stopping you — tag the person)
 
 ## R3 log
 2026-11-26 | R3-01, R3-02 | Installed espeak-ng (Windows MSI) + phonemizer pip package. Rewrote `get_reference_phonemes` to call phonemizer with espeak backend for real IPA output (e.g. "hello" → `h ə l oʊ`). Mock fallback preserved via `USE_MOCK_ML=1`. Added `_LANG_MAP` for en-us, hi, fr-fr; Sanskrit mapped to hi as placeholder. Tested English, French, Hindi — all return valid IPA. 7 new tests in `test_reference.py`, 13/13 pass. | ml/reference/reference_phonemes.py, tests/test_reference.py, docs/TASKS.md | R3-03 next (phoneme mapping); R2-02 unblocked
+2026-11-26 | R3-04, R3-05 | Implemented weighted substitution scoring in `ml/scoring/scorer.py` giving partial credit (0.5) to phonetically similar pairs (s/ʃ, p/b, t/d, ɪ/i, etc.). Implemented `score_words` to attribute phonemes and compute per-word scores (0-100) for multi-word sentences. Built `generate_feedback` producing readable tips (e.g. "You said /s/ in 'ship'; the expected sound is /ʃ/."). Connected to `ml/pipeline.py`. 23/23 tests pass. | ml/scoring/scorer.py, ml/pipeline.py, tests/test_scorer.py, docs/TASKS.md | R4 UI tasks next
 
 ## R4 log
 (empty)
