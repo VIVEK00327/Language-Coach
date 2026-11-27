@@ -1,7 +1,8 @@
 from ml.pipeline import assess
 
 
-def test_mock_pipeline_runs():
+def test_mock_pipeline_runs(monkeypatch):
+    monkeypatch.setenv("USE_MOCK_ML", "1")
     r = assess("fake.wav", "water", "english")
     assert 0 <= r.overall_score <= 100
     assert r.words and r.feedback
@@ -12,7 +13,8 @@ def test_mock_pipeline_runs():
     assert r.timing["total_sec"] >= 0
 
 
-def test_multi_word_pipeline_runs():
+def test_multi_word_pipeline_runs(monkeypatch):
+    monkeypatch.setenv("USE_MOCK_ML", "1")
     r = assess("fake.wav", "good ship", "english")
     assert 0 <= r.overall_score <= 100
     assert len(r.words) == 2

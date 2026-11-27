@@ -39,7 +39,7 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 | R2-01 | Learn: waveform, 16 kHz, spectrogram/MFCC, phonemes, wav2vec2 vs Whisper; run repo with mock | W1 | - | DONE (2026-11-26) |
 | R2-02 | `ml/speech/audio_utils.py`: load at 16 kHz, trim silence, normalise | W1 | - | DONE (2026-11-26) |
 | R2-03 | Try Whisper tiny/base on 5 own recordings; note speed + accuracy | W1 | R2-02 | TODO |
-| R2-04 | Real `recognize_phonemes` for English with a pretrained phoneme model on CPU; mock stays as fallback (`USE_MOCK_ML=1`) | W2 | R2-02 | TODO |
+| R2-04 | Real `recognize_phonemes` for English with a pretrained phoneme model on CPU; mock stays as fallback (`USE_MOCK_ML=1`) | W2 | R2-02 | DOING (Vivek) |
 | R2-05 | Compare 2 candidate models on speed/accuracy; record result in PRD section 9 | W2 | R2-04 | TODO |
 | R2-06 | Robustness: noise, short clips, silence, different mics; load model once and cache | W3 | R2-04 | TODO |
 | R2-07 | Try French; report what works | W3 | R2-04 | TODO |
@@ -51,7 +51,7 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 |---|---|---|---|---|
 | R3-01 | Learn IPA, G2P, edit distance; read `ml/scoring/scorer.py`; install espeak-ng + phonemizer | W1 | - | DONE (2026-11-26) |
 | R3-02 | Real `get_reference_phonemes` for English (phonemizer+espeak-ng); check French and Hindi | W2 | R3-01 | DONE (2026-11-26) |
-| R3-03 | Phoneme symbol mapping between recognizer and reference; document in `ml/reference/PHONEME_MAP.md` | W2 | R3-02, R2-04 (mock ok) | TODO |
+| R3-03 | Phoneme symbol mapping between recognizer and reference; document in `ml/reference/PHONEME_MAP.md` | W2 | R3-02, R2-04 (mock ok) | DONE (2026-11-27) |
 | R3-04 | Weighted scoring (similar sounds cost less), per-word scores, overall 0-100 | W3 | R3-03 | DONE (2026-11-26) |
 | R3-05 | Readable feedback text ("You said /s/, expected /ʃ/") | W3 | R3-04 | DONE (2026-11-26) |
 | R3-06 | Compare scores with speechocean762 human scores with R5 (correlation) | W3 | R3-04, R5-06 | TODO |
