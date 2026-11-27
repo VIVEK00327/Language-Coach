@@ -1,5 +1,14 @@
-"""API routes. OWNER: Role 4. Calls ml.pipeline.assess only."""
+"""API routes. OWNER: Role 4. Calls ml.pipeline.assess only.
+
+Features:
+- Validates uploaded audio is true RIFF/WAVE, not empty, and <= 15 seconds.
+- Rejects invalid formats with 400 JSON errors.
+- Cleans up temporary audio files reliably via try/finally.
+- Friendly error catching and server-side logging for ML pipeline errors.
+"""
 import json
+import logging
+import os
 import tempfile
 from pathlib import Path
 from flask import Blueprint, jsonify, render_template, request
@@ -7,8 +16,12 @@ from app import db
 from ml.pipeline import assess
 from ml.reference.reference_phonemes import SUPPORTED
 
+log = logging.getLogger(__name__)
+
 bp = Blueprint("practice", __name__)
 CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "content"
+
+MAX_DURATION_SECONDS = 15.0
 
 
 @bp.get("/")
@@ -32,17 +45,67 @@ def content(language):
 @bp.post("/api/assess")
 def assess_route():
     audio = request.files.get("audio")
-    language = request.form.get("language", "english")
-    text = request.form.get("text", "")
+    language = request.form.get("language", "english").lower().strip()
+    text = request.form.get("text", "").strip()
+
     if not text or language not in SUPPORTED:
         return jsonify({"error": "text and a supported language are required"}), 400
-    suffix = Path(audio.filename).suffix if audio and audio.filename else ".wav"
-    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
-        if audio:
-            audio.save(tmp.name)
-        result = assess(tmp.name, text, language).to_dict()
-    db.save_attempt(result)
-    return jsonify(result)
+
+    if not audio or not audio.filename:
+        return jsonify({"error": "Audio must be a WAV recording, please try again."}), 400
+
+    # Create temporary file with .wav extension
+    tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    tmp_path = tmp.name
+    tmp.close()
+
+    try:
+        # Save uploaded stream
+        audio.save(tmp_path)
+
+        file_size = os.path.getsize(tmp_path)
+        if file_size < 44:  # Minimum standard WAV header size
+            return jsonify({"error": "Audio must be a WAV recording, please try again."}), 400
+
+        # Validate RIFF....WAVE signature
+        with open(tmp_path, "rb") as f:
+            header = f.read(12)
+        if len(header) < 12 or header[:4] != b"RIFF" or header[8:12] != b"WAVE":
+            return jsonify({"error": "Audio must be a WAV recording, please try again."}), 400
+
+        # Validate audio duration and readability using soundfile
+        import soundfile as sf
+        try:
+            info = sf.info(tmp_path)
+        except Exception as read_err:
+            log.warning("soundfile failed to inspect '%s': %s", tmp_path, read_err)
+            return jsonify({"error": "Audio must be a WAV recording, please try again."}), 400
+
+        if info.duration <= 0.0:
+            return jsonify({"error": "Audio recording is empty, please try again."}), 400
+
+        if info.duration > MAX_DURATION_SECONDS:
+            return jsonify({
+                "error": f"Audio clip is {info.duration:.1f}s long (max limit is {MAX_DURATION_SECONDS}s). Please record a shorter attempt."
+            }), 400
+
+        # Execute ML assessment
+        try:
+            result = assess(tmp_path, text, language).to_dict()
+        except Exception as pipeline_err:
+            log.exception("Assessment failed on '%s' (%s): %s", text, language, pipeline_err)
+            return jsonify({"error": f"Assessment service error: {pipeline_err}"}), 500
+
+        db.save_attempt(result)
+        return jsonify(result), 200
+
+    finally:
+        # Guarantee removal of temporary audio file
+        try:
+            if os.path.exists(tmp_path):
+                os.unlink(tmp_path)
+        except Exception as cleanup_err:
+            log.warning("Failed to remove temp file '%s': %s", tmp_path, cleanup_err)
 
 
 @bp.get("/api/progress")

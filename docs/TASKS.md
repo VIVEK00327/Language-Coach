@@ -61,13 +61,13 @@ Sunday   R1 merges all, runs tests, updates MEMORY STATUS
 ## R4: App / UI
 | ID | Task | Week | Needs | Status |
 |---|---|---|---|---|
-| R4-01 | Learn Flask routes/templates, `MediaRecorder`, fetch/FormData, SQLite; run starter app on mock | W1 | - | TODO |
-| R4-02 | Sketch screens: practice, results, dashboard | W1 | - | TODO |
-| R4-03 | Practice page: language dropdown, word list from `/api/content/<language>`, reference audio playback | W2 | R4-01 | TODO |
-| R4-04 | Browser recording to `/api/assess` with loading state; convert webm to wav on server if needed (agree with R2) | W2 | R4-03 | TODO |
-| R4-05 | Results view: overall score, per-word score, wrong sounds in red, feedback text | W3 | R4-04 | TODO |
-| R4-06 | Save every attempt in SQLite; basic history list | W3 | R4-04 | TODO |
-| R4-07 | Mobile-friendly layout; errors (mic blocked, empty recording); API tests | W4 | R4-05 | TODO |
+| R4-01 | Learn Flask routes/templates, `MediaRecorder`, fetch/FormData, SQLite; run starter app on mock | W1 | - | DONE (2026-11-27) |
+| R4-02 | Sketch screens: practice, results, dashboard | W1 | - | DONE (2026-11-27) |
+| R4-03 | Practice page: language dropdown, word list from `/api/content/<language>`, reference audio playback | W2 | R4-01 | DONE (2026-11-27) |
+| R4-04 | Browser recording to `/api/assess` with loading state; convert webm to wav on server if needed (agree with R2) | W2 | R4-03 | DONE (2026-11-27) |
+| R4-05 | Results view: overall score, per-word score, wrong sounds in red, feedback text | W3 | R4-04 | DONE (2026-11-27) |
+| R4-06 | Save every attempt in SQLite; basic history list | W3 | R4-04 | DONE (2026-11-27) |
+| R4-07 | Mobile-friendly layout; errors (mic blocked, empty recording); API tests | W4 | R4-05 | DONE (2026-11-27) |
 | R4-08 | (Dec+) Progress dashboard with charts; practice activities, levels, daily set; optional login; polish | Dec-Feb | R4-06 | TODO |
 
 ## R5: Data, evaluation, report
