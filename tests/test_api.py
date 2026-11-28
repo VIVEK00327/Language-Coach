@@ -23,6 +23,22 @@ def _make_wav_bytes(duration_sec: float = 0.5, sr: int = 16000) -> bytes:
     return buf.read()
 
 
+def test_page_routes_return_200(client):
+    """Verify all front-end pages render successfully."""
+    for path in ["/", "/practice", "/progress"]:
+        res = client.get(path)
+        assert res.status_code == 200
+        assert b"Language Coach" in res.data
+
+
+def test_404_page(client):
+    """Verify custom 404 page renders with status 404."""
+    res = client.get("/non-existent-page-url")
+    assert res.status_code == 404
+    assert b"404" in res.data
+    assert b"Page not found" in res.data
+
+
 def test_languages_and_content(client):
     assert "english" in client.get("/api/languages").get_json()
     assert client.get("/api/content/english").status_code == 200

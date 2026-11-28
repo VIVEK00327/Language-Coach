@@ -15,25 +15,32 @@
     </a>
   </div>
 
-  <!-- Summary Stats Overview -->
+  <!-- Summary Stats -->
   <section class="stats-grid" aria-label="Summary statistics">
     <div class="card stat-card">
       <span class="stat-label">Total Attempts</span>
       <span id="stat-total" class="stat-value">0</span>
       <span class="stat-hint">Recorded practice attempts</span>
     </div>
-
     <div class="card stat-card">
       <span class="stat-label">Average Score</span>
       <span id="stat-average" class="stat-value">0%</span>
       <span class="stat-hint">Across all languages</span>
     </div>
-
     <div class="card stat-card">
       <span class="stat-label">Top Language</span>
       <span id="stat-top-lang" class="stat-value">—</span>
       <span class="stat-hint">Most practiced language</span>
     </div>
+  </section>
+
+  <!-- Score Over Time Chart -->
+  <section class="card chart-card" aria-label="Score trend chart">
+    <h3>Score Over Time</h3>
+    <div class="chart-container">
+      <canvas id="score-chart" aria-label="Line chart showing score trends"></canvas>
+    </div>
+    <p id="chart-empty" class="chart-empty hidden">Need at least 2 attempts to show a chart. Start practicing!</p>
   </section>
 
   <!-- Complete History Table -->
@@ -48,7 +55,7 @@
 
     <div id="progress-empty" class="history-empty">
       <p>No practice attempts recorded yet.</p>
-      <a href="/practice" class="btn btn-primary" style="margin-top: 1rem;">Start Your First Practice Attempt</a>
+      <a href="/practice" class="btn btn-primary" style="margin-top:1rem">Start Your First Practice Attempt</a>
     </div>
 
     <div class="table-container">
@@ -70,83 +77,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-  async function loadProgressDashboard() {
-    try {
-      const res = await fetch("/api/progress");
-      if (!res.ok) return;
-      const attempts = await res.json();
-
-      const totalEl = document.getElementById("stat-total");
-      const avgEl = document.getElementById("stat-average");
-      const topLangEl = document.getElementById("stat-top-lang");
-      const emptyEl = document.getElementById("progress-empty");
-      const tableEl = document.getElementById("progress-table");
-      const tbodyEl = document.getElementById("progress-tbody");
-
-      totalEl.textContent = attempts.length;
-
-      if (!attempts || attempts.length === 0) {
-        avgEl.textContent = "0%";
-        topLangEl.textContent = "—";
-        emptyEl.classList.remove("hidden");
-        tableEl.classList.add("hidden");
-        return;
-      }
-
-      emptyEl.classList.add("hidden");
-      tableEl.classList.remove("hidden");
-
-      // Calculate statistics
-      let sumScore = 0;
-      const langCounts = {};
-
-      attempts.forEach(a => {
-        sumScore += (a.overall_score || 0);
-        const l = a.language || "unknown";
-        langCounts[l] = (langCounts[l] || 0) + 1;
-      });
-
-      const avg = Math.round(sumScore / attempts.length);
-      avgEl.textContent = `${avg}%`;
-
-      // Top language
-      let topL = "—";
-      let maxC = 0;
-      for (const [lang, count] of Object.entries(langCounts)) {
-        if (count > maxC) {
-          maxC = count;
-          topL = lang.charAt(0).toUpperCase() + lang.slice(1);
-        }
-      }
-      topLangEl.textContent = topL;
-
-      // Render table rows
-      tbodyEl.innerHTML = attempts.map(row => {
-        const score = Math.round(row.overall_score || 0);
-        const badgeClass = score >= 70 ? "badge-high" : (score >= 40 ? "badge-medium" : "badge-low");
-        const verdict = score >= 70 ? "Native match" : (score >= 40 ? "Near miss" : "Needs practice");
-        
-        let dateStr = row.created_at || "";
-        if (dateStr.length > 16) dateStr = dateStr.replace("T", " ");
-
-        return `
-          <tr>
-            <td><small class="muted-text">${dateStr}</small></td>
-            <td><span class="lang-pill">${row.language}</span></td>
-            <td><strong>${row.target_text}</strong></td>
-            <td><span class="score-badge ${badgeClass}">${score}%</span></td>
-            <td><small class="muted-text">${verdict}</small></td>
-          </tr>
-        `;
-      }).join("");
-
-    } catch (err) {
-      console.warn("Failed to load progress dashboard:", err);
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", loadProgressDashboard);
-  document.getElementById("refresh-history").addEventListener("click", loadProgressDashboard);
-</script>
+<script src="/static/js/progress.js"></script>
 {% endblock %}

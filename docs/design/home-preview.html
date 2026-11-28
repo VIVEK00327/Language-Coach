@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Language Coach — Design Preview</title>
+  <style>
+    :root {
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #ec4899 50%, #06b6d4 100%);
+      --bg-body: #0c0a16;
+      --bg-gradient: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,.20) 0%, transparent 70%),
+                     linear-gradient(180deg, #0c0a16 0%, #110e1f 100%);
+      --glass-bg: rgba(22,18,40,0.75);
+      --glass-border: rgba(255,255,255,0.08);
+      --text-primary: #f0eef8;
+      --text-secondary: #c4bfdb;
+      --text-muted: #8d87a8;
+      --primary: #a78bfa;
+      --success: #34d399;
+    }
+    [data-theme="light"] {
+      --bg-body: #f4f1fa;
+      --bg-gradient: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,.12) 0%, transparent 70%),
+                     linear-gradient(180deg, #f4f1fa 0%, #ede9fe 100%);
+      --glass-bg: rgba(255,255,255,0.70);
+      --glass-border: rgba(255,255,255,0.50);
+      --text-primary: #1e1b2e;
+      --text-secondary: #4a4564;
+      --text-muted: #7c7893;
+      --primary: #7c3aed;
+      --success: #10b981;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--bg-body);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.25s ease;
+    }
+    .preview-header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+    .brand { font-size: 1.3rem; font-weight: 800; }
+    .btn-toggle {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .hero { text-align: center; max-width: 760px; margin-bottom: 3rem; }
+    .hero-badge {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .gradient-text {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.sub { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+    }
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .card h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="preview-header">
+    <div class="brand">Language Coach &bull; Static Design Reference</div>
+    <button class="btn-toggle" onclick="toggle()">Switch Theme</button>
+  </div>
+  <div class="hero">
+    <div class="hero-badge">Next-Generation Speech Phonetics</div>
+    <h1>Speak with confidence<br><span class="gradient-text">in any language.</span></h1>
+    <p class="sub">Master native-like articulation with phone-by-phone AI feedback. Powered by local acoustic models, weighted phonetic distance, and zero cloud dependencies.</p>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <small style="color:var(--text-muted)">English</small>
+      <h3>"Hello"</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Sibilants, dental fricatives, and fluid vowels.</p>
+    </div>
+    <div class="card">
+      <small style="color:var(--text-muted)">हिन्दी</small>
+      <h3>"नमस्ते"</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Retroflex vs dental articulation, plosives.</p>
+    </div>
+    <div class="card">
+      <small style="color:var(--text-muted)">संस्कृतम्</small>
+      <h3>"नमो नमः"</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Visarga (ः), anusvara (ं), vowel lengths.</p>
+    </div>
+    <div class="card">
+      <small style="color:var(--text-muted)">Français</small>
+      <h3>"Bonjour"</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Nasal vowels and uvular fricatives (/ʁ/).</p>
+    </div>
+  </div>
+  <script>
+    function toggle() {
+      var d = document.documentElement;
+      var cur = d.getAttribute('data-theme') || 'dark';
+      d.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

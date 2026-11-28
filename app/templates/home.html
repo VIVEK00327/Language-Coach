@@ -33,20 +33,19 @@
       </a>
     </div>
 
-    <!-- Decorative Animated Waveform Illustration -->
+    <!-- Decorative Animated Waveform -->
     <div class="hero-waveform-card" aria-hidden="true">
       <svg class="hero-wave-svg" viewBox="0 0 800 160" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.8" />
-            <stop offset="50%" stop-color="#7c3aed" stop-opacity="0.9" />
-            <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.8" />
+          <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.8"/>
+            <stop offset="50%" stop-color="#ec4899" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.8"/>
           </linearGradient>
         </defs>
-        <!-- Animated sine waves -->
-        <path class="wave-path wave-1" d="M 0,80 C 100,20 200,140 300,80 C 400,20 500,140 600,80 C 700,20 800,140 900,80 L 900,160 L 0,160 Z" fill="url(#waveGradient)" opacity="0.15"></path>
-        <path class="wave-path wave-2" d="M 0,80 C 150,140 250,20 400,80 C 550,140 650,20 800,80 L 800,160 L 0,160 Z" fill="url(#waveGradient)" opacity="0.25"></path>
-        <path class="wave-stroke" d="M 0,80 C 50,30 100,130 150,80 C 200,30 250,130 300,80 C 350,30 400,130 450,80 C 500,30 550,130 600,80 C 650,30 700,130 750,80 C 800,30 850,130 900,80" fill="none" stroke="url(#waveGradient)" stroke-width="3"></path>
+        <path class="wave-path wave-1" d="M0,80 C100,20 200,140 300,80 C400,20 500,140 600,80 C700,20 800,140 900,80 L900,160 L0,160Z" fill="url(#waveGrad)" opacity="0.15"></path>
+        <path class="wave-path wave-2" d="M0,80 C150,140 250,20 400,80 C550,140 650,20 800,80 L800,160 L0,160Z" fill="url(#waveGrad)" opacity="0.25"></path>
+        <path class="wave-stroke" d="M0,80 C50,30 100,130 150,80 C200,30 250,130 300,80 C350,30 400,130 450,80 C500,30 550,130 600,80 C650,30 700,130 750,80 C800,30 850,130 900,80" fill="none" stroke="url(#waveGrad)" stroke-width="3"></path>
       </svg>
       <div class="waveform-overlay-chips">
         <span class="chip-sample chip-green">/ʃ/ matched</span>
@@ -56,7 +55,7 @@
     </div>
   </section>
 
-  <!-- 2. Language Selection Cards -->
+  <!-- 2. Language Cards -->
   <section class="languages-section" aria-labelledby="languages-heading">
     <div class="section-header">
       <h2 id="languages-heading" class="section-heading">Supported Languages</h2>
@@ -64,7 +63,6 @@
     </div>
 
     <div class="languages-grid">
-      <!-- English Card -->
       <article class="lang-card">
         <div class="lang-card-header">
           <div class="lang-script-badge">English</div>
@@ -82,7 +80,6 @@
         </div>
       </article>
 
-      <!-- Hindi Card -->
       <article class="lang-card">
         <div class="lang-card-header">
           <div class="lang-script-badge">हिन्दी</div>
@@ -100,7 +97,6 @@
         </div>
       </article>
 
-      <!-- Sanskrit Card -->
       <article class="lang-card">
         <div class="lang-card-header">
           <div class="lang-script-badge">संस्कृतम्</div>
@@ -118,7 +114,6 @@
         </div>
       </article>
 
-      <!-- French Card -->
       <article class="lang-card">
         <div class="lang-card-header">
           <div class="lang-script-badge">Français</div>
@@ -126,7 +121,7 @@
         </div>
         <div class="lang-greeting" lang="fr">"Bonjour"</div>
         <p class="lang-desc">
-          Conquer nasal vowels (<strong>an, in, on, un</strong>) and the French uvular fricative / consonant (<strong>/ʁ/</strong>).
+          Conquer nasal vowels (<strong>an, in, on, un</strong>) and the French uvular fricative (<strong>/ʁ/</strong>).
         </p>
         <div class="lang-footer">
           <a href="/practice?lang=french" class="btn-text">
@@ -138,7 +133,7 @@
     </div>
   </section>
 
-  <!-- 3. How It Works Section -->
+  <!-- 3. How It Works -->
   <section id="how-it-works" class="how-section" aria-labelledby="how-heading">
     <div class="section-header">
       <h2 id="how-heading" class="section-heading">How It Works</h2>
@@ -149,25 +144,17 @@
       <div class="step-card">
         <div class="step-number">1</div>
         <h3 class="step-title">Select &amp; Listen</h3>
-        <p class="step-desc">
-          Pick a phrase from beginner to advanced tiers. Use the integrated native speech synthesis to internalize the target sound.
-        </p>
+        <p class="step-desc">Pick a phrase from beginner to advanced tiers. Use the integrated native speech synthesis to internalize the target sound.</p>
       </div>
-
       <div class="step-card">
         <div class="step-number">2</div>
         <h3 class="step-title">Record with Live Waveform</h3>
-        <p class="step-desc">
-          Speak naturally into your microphone. Watch real-time acoustic waveforms and volume meters. Converted locally to 16 kHz WAV.
-        </p>
+        <p class="step-desc">Speak naturally into your microphone. Watch real-time acoustic waveforms and volume meters. Converted locally to 16 kHz WAV.</p>
       </div>
-
       <div class="step-card">
         <div class="step-number">3</div>
         <h3 class="step-title">Sound-by-Sound Feedback</h3>
-        <p class="step-desc">
-          Get an overall score (0–100) and color-coded phonetic chips pinpointing exactly where your pronunciation hit or missed.
-        </p>
+        <p class="step-desc">Get an overall score (0–100) and color-coded phonetic chips pinpointing exactly where your pronunciation hit or missed.</p>
       </div>
     </div>
   </section>

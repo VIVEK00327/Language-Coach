@@ -8,8 +8,10 @@
 4. `docs/PRD.md`: only the section the task needs (sections are numbered).
 5. Source files: only the files named in your task's folders. Open a whole folder listing only if you must.
 
+> **Token-Saving Guardrail:** Folders `docs/setup/`, `docs/project/`, `docs/team/`, `docs/design/`, and `docs/report/` are authored for human mentors, teammates, and evaluators. AI assistants must **NOT** open or read them unless a user prompt explicitly requests modifications to those specific files.
+
 ## 2. Token-saving rules
-- Do NOT read the entire repo, `data/`, model files, audio, `docs/report/`, or other roles' folders.
+- Do NOT read the entire repo, `data/`, model files, audio, or other roles' folders.
 - Do not re-read a file already in this conversation; do not paste large files back; show only the changed lines.
 - Prefer searching (grep for a function name) over opening files. Open a file range, not the whole file, when possible.
 - Do not re-explain the project to the user; it is in the PRD. Keep replies short: what changed, how to run, what is next.
@@ -19,7 +21,7 @@
 ## 3. Secrets and private data (strict)
 - All keys, tokens and passwords live ONLY in `.env` (git-ignored). `.env.example` lists variable names with empty or fake values and is the only env file committed.
 - Read config with `os.getenv(...)` (see `app/config.py`). Never hardcode a key, token, password, or personal URL in code, docs, tests, notebooks, logs, commit messages, or chat.
-- Never print, echo, or paste the contents of `.env`. Never ask the user to paste a real key into chat.
+- Never print, echo, or paste the contents of `.env`. Never ask the user to paste a real key into chat. Mention variable NAMES only.
 - Do not commit: `.env`, datasets, audio recordings of real people, model weights, the SQLite database (`instance/`). All are in `.gitignore`.
 - If a secret is ever committed or shared: tell the lead immediately, revoke/rotate the key, and remove it from Git history.
 - Before every commit run `git status` and check no `.env` or data file is staged.
@@ -39,10 +41,27 @@
 
 ## 6. Git workflow
 While only one person works: commit directly to `main`. Switch back to branches + PRs when teammates start.
-```bash
-git add -A && git status        # confirm no .env/data staged
-git commit -m "R2: real English phoneme recognizer" && git push
+Always run commands individually (never use bash `&&` on Windows PowerShell):
+
+**Windows PowerShell:**
+```powershell
+python -m pytest tests
+git status
+git add -A
+git status
+git commit -m "R2: real English phoneme recognizer"
+git push
 ```
+
+**macOS / Linux:**
+```bash
+python3 -m pytest tests
+git status
+git add -A
+git commit -m "R2: real English phoneme recognizer"
+git push
+```
+
 Docs conflicts: each role edits only its own TASKS table and its own MEMORY log section, so merges stay clean.
 
 ## 7. Finishing a task (always)
