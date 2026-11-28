@@ -1,10 +1,6 @@
-"""API routes. OWNER: Role 4. Calls ml.pipeline.assess only.
-
-Features:
-- Validates uploaded audio is true RIFF/WAVE, not empty, and <= 15 seconds.
-- Rejects invalid formats with 400 JSON errors.
-- Cleans up temporary audio files reliably via try/finally.
-- Friendly error catching and server-side logging for ML pipeline errors.
+"""API routes and page views. OWNER: Role 4.
+Provides Home (/), Practice (/practice), and Progress (/progress) pages,
+plus the core /api/assess, /api/languages, /api/content, /api/progress endpoints.
 """
 import json
 import logging
@@ -24,11 +20,30 @@ CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "content"
 MAX_DURATION_SECONDS = 15.0
 
 
+# -------------------------------------------------------------------------
+# Page Views
+# -------------------------------------------------------------------------
 @bp.get("/")
 def index():
-    return render_template("index.html")
+    """Landing page introducing Language Coach."""
+    return render_template("home.html")
 
 
+@bp.get("/practice")
+def practice():
+    """Interactive practice studio with live audio recording and phoneme scoring."""
+    return render_template("practice.html")
+
+
+@bp.get("/progress")
+def progress_view():
+    """Learner progress dashboard and attempt history."""
+    return render_template("progress.html")
+
+
+# -------------------------------------------------------------------------
+# API Endpoints (Stable Contracts)
+# -------------------------------------------------------------------------
 @bp.get("/api/languages")
 def languages():
     return jsonify(SUPPORTED)
@@ -60,11 +75,10 @@ def assess_route():
     tmp.close()
 
     try:
-        # Save uploaded stream
         audio.save(tmp_path)
 
         file_size = os.path.getsize(tmp_path)
-        if file_size < 44:  # Minimum standard WAV header size
+        if file_size < 44:
             return jsonify({"error": "Audio must be a WAV recording, please try again."}), 400
 
         # Validate RIFF....WAVE signature
@@ -73,7 +87,7 @@ def assess_route():
         if len(header) < 12 or header[:4] != b"RIFF" or header[8:12] != b"WAVE":
             return jsonify({"error": "Audio must be a WAV recording, please try again."}), 400
 
-        # Validate audio duration and readability using soundfile
+        # Validate audio duration using soundfile
         import soundfile as sf
         try:
             info = sf.info(tmp_path)
@@ -100,7 +114,6 @@ def assess_route():
         return jsonify(result), 200
 
     finally:
-        # Guarantee removal of temporary audio file
         try:
             if os.path.exists(tmp_path):
                 os.unlink(tmp_path)

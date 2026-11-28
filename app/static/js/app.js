@@ -49,7 +49,6 @@ const DOM = {
   historyTable: document.getElementById("history-table"),
   historyTbody: document.getElementById("history-tbody"),
   historyEmpty: document.getElementById("history-empty"),
-  historyCount: document.getElementById("history-count"),
 
   // Compatibility Fallbacks
   statusDiv: document.getElementById("status"),
@@ -81,35 +80,41 @@ let currentState = AppState.READY;
 
 function setState(state) {
   currentState = state;
+  if (!DOM.stateReady) return; // Not on practice page
+
   DOM.stateReady.classList.toggle("hidden", state !== AppState.READY);
   DOM.stateListening.classList.toggle("hidden", state !== AppState.LISTENING);
   DOM.stateChecking.classList.toggle("hidden", state !== AppState.CHECKING);
   DOM.stateResult.classList.toggle("hidden", state !== AppState.RESULT);
 
-  // Enable/disable navigation controls during recording or checking
   const isBusy = (state === AppState.LISTENING || state === AppState.CHECKING);
-  DOM.langSel.disabled = isBusy;
-  DOM.wordSel.disabled = isBusy;
-  DOM.listenBtn.disabled = isBusy;
+  if (DOM.langSel) DOM.langSel.disabled = isBusy;
+  if (DOM.wordSel) DOM.wordSel.disabled = isBusy;
+  if (DOM.listenBtn) DOM.listenBtn.disabled = isBusy;
 }
 
 function showError(title, message) {
-  DOM.errorTitle.textContent = title;
-  DOM.errorDesc.textContent = message;
-  DOM.errorBanner.classList.remove("hidden");
+  if (DOM.errorTitle && DOM.errorDesc && DOM.errorBanner) {
+    DOM.errorTitle.textContent = title;
+    DOM.errorDesc.textContent = message;
+    DOM.errorBanner.classList.remove("hidden");
+  }
   if (DOM.statusDiv) DOM.statusDiv.textContent = `Error: ${title} - ${message}`;
 }
 
 function clearError() {
-  DOM.errorBanner.classList.add("hidden");
+  if (DOM.errorBanner) DOM.errorBanner.classList.add("hidden");
 }
 
-DOM.errorClose.addEventListener("click", clearError);
+if (DOM.errorClose) {
+  DOM.errorClose.addEventListener("click", clearError);
+}
 
 /* ==========================================================================
    3. Content & Target Loading
    ========================================================================== */
 async function loadLanguages() {
+  if (!DOM.langSel) return;
   try {
     const res = await fetch("/api/languages");
     if (!res.ok) throw new Error("Could not load languages list");
@@ -117,6 +122,14 @@ async function loadLanguages() {
     DOM.langSel.innerHTML = langs.map(l =>
       `<option value="${l}">${l.charAt(0).toUpperCase() + l.slice(1)}</option>`
     ).join("");
+
+    // Read URL query parameter (e.g. /practice?lang=hindi)
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedLang = urlParams.get("lang");
+    if (requestedLang && langs.includes(requestedLang.toLowerCase())) {
+      DOM.langSel.value = requestedLang.toLowerCase();
+    }
+
     await loadWords();
   } catch (err) {
     showError("Network Error", "Failed to load languages: " + err.message);
@@ -124,6 +137,7 @@ async function loadLanguages() {
 }
 
 async function loadWords() {
+  if (!DOM.wordSel) return;
   try {
     const lang = DOM.langSel.value;
     const res = await fetch(`/api/content/${lang}`);
@@ -138,47 +152,46 @@ async function loadWords() {
 }
 
 function updateTargetDisplay() {
+  if (!DOM.targetDisplay || !DOM.wordSel) return;
   const currentText = DOM.wordSel.value || "—";
   DOM.targetDisplay.textContent = currentText;
 }
 
-DOM.langSel.addEventListener("change", loadWords);
-DOM.wordSel.addEventListener("change", updateTargetDisplay);
+if (DOM.langSel) DOM.langSel.addEventListener("change", loadWords);
+if (DOM.wordSel) DOM.wordSel.addEventListener("change", updateTargetDisplay);
 
 /* ==========================================================================
    4. Speech Synthesis Reference Playback
    ========================================================================== */
-DOM.listenBtn.addEventListener("click", () => {
-  const text = DOM.wordSel.value;
-  if (!text) return;
+if (DOM.listenBtn) {
+  DOM.listenBtn.addEventListener("click", () => {
+    const text = DOM.wordSel ? DOM.wordSel.value : "";
+    if (!text) return;
 
-  if (!("speechSynthesis" in window)) {
-    showError("Audio Unsupported", "Speech synthesis is not supported on this browser.");
-    return;
-  }
+    if (!("speechSynthesis" in window)) {
+      showError("Audio Unsupported", "Speech synthesis is not supported on this browser.");
+      return;
+    }
 
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  const targetLocale = VOICE_LANGS[DOM.langSel.value] || "en-US";
-  utterance.lang = targetLocale;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const targetLocale = VOICE_LANGS[DOM.langSel.value] || "en-US";
+    utterance.lang = targetLocale;
 
-  if (DOM.langSel.value === "sanskrit") {
-    DOM.statusDiv.textContent = "Playing reference audio (Hindi voice approximation for Sanskrit).";
-  }
+    if (DOM.langSel.value === "sanskrit" && DOM.statusDiv) {
+      DOM.statusDiv.textContent = "Playing reference audio (Hindi voice approximation for Sanskrit).";
+    }
 
-  utterance.onstart = () => {
-    DOM.listenBtn.classList.add("playing");
-  };
-  utterance.onend = () => {
-    DOM.listenBtn.classList.remove("playing");
-  };
-  utterance.onerror = (e) => {
-    DOM.listenBtn.classList.remove("playing");
-    showError("Playback Error", "Failed to play reference pronunciation: " + e.error);
-  };
+    utterance.onstart = () => DOM.listenBtn.classList.add("playing");
+    utterance.onend = () => DOM.listenBtn.classList.remove("playing");
+    utterance.onerror = (e) => {
+      DOM.listenBtn.classList.remove("playing");
+      showError("Playback Error", "Failed to play reference pronunciation: " + e.error);
+    };
 
-  window.speechSynthesis.speak(utterance);
-});
+    window.speechSynthesis.speak(utterance);
+  });
+}
 
 /* ==========================================================================
    5. Live Audio Visualizer & Recording Engine
@@ -212,7 +225,7 @@ async function startRecording() {
     return;
   }
 
-  // Setup Web Audio Analyser for live waveform and volume metering
+  // Setup Web Audio Analyser
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   audioContext = new AudioCtx();
   const source = audioContext.createMediaStreamSource(mediaStream);
@@ -220,7 +233,6 @@ async function startRecording() {
   analyserNode.fftSize = 256;
   source.connect(analyserNode);
 
-  // Setup MediaRecorder
   mediaRecorder = new MediaRecorder(mediaStream);
   mediaRecorder.ondataavailable = (e) => {
     if (e.data && e.data.size > 0) recordedChunks.push(e.data);
@@ -232,9 +244,8 @@ async function startRecording() {
   setState(AppState.LISTENING);
   recordingStartTime = performance.now();
   quietTimer = 0;
-  DOM.quietWarning.classList.add("hidden");
+  if (DOM.quietWarning) DOM.quietWarning.classList.add("hidden");
 
-  // Start waveform animation and timer loop
   drawWaveform();
   startTimer();
 }
@@ -252,19 +263,19 @@ function startTimer() {
 }
 
 function updateTimerUI(seconds) {
+  if (!DOM.timerText || !DOM.timerRingFill) return;
   const clamped = Math.min(seconds, MAX_RECORD_SECONDS);
   const mins = Math.floor(clamped / 60);
   const secs = Math.floor(clamped % 60);
   DOM.timerText.textContent = `${mins}:${secs.toString().padStart(2, "0")}`;
 
-  // Update circular ring progress
   const progressRatio = clamped / MAX_RECORD_SECONDS;
   const offset = TIMER_CIRCUMFERENCE * (1 - progressRatio);
   DOM.timerRingFill.style.strokeDashoffset = offset;
 }
 
 function drawWaveform() {
-  if (currentState !== AppState.LISTENING || !analyserNode) return;
+  if (currentState !== AppState.LISTENING || !analyserNode || !DOM.waveformCanvas) return;
 
   const canvas = DOM.waveformCanvas;
   const ctx = canvas.getContext("2d");
@@ -280,25 +291,26 @@ function drawWaveform() {
   }
   const rms = Math.sqrt(sumSquares / bufferLength);
 
-  // Smooth volume level meter
-  const volPct = Math.min(100, Math.round(rms * 280));
-  DOM.volumeFill.style.width = `${volPct}%`;
+  if (DOM.volumeFill) {
+    const volPct = Math.min(100, Math.round(rms * 280));
+    DOM.volumeFill.style.width = `${volPct}%`;
+  }
 
-  // Detect quiet speaking (>2s low level)
+  // Detect low volume
   if (rms < 0.015) {
-    quietTimer += 0.016; // approx 60fps frame delta
-    if (quietTimer > 2.0) {
+    quietTimer += 0.016;
+    if (quietTimer > 2.0 && DOM.quietWarning) {
       DOM.quietWarning.classList.remove("hidden");
     }
   } else {
     quietTimer = 0;
-    DOM.quietWarning.classList.add("hidden");
+    if (DOM.quietWarning) DOM.quietWarning.classList.add("hidden");
   }
 
   // Draw smooth waveform
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.lineWidth = 2.5;
-  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#4f46e5";
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--accent-primary").trim() || "#4f46e5";
   ctx.beginPath();
 
   const sliceWidth = canvas.width / bufferLength;
@@ -332,14 +344,13 @@ function stopRecording() {
   }
 }
 
-DOM.recordBtn.addEventListener("click", startRecording);
-DOM.stopBtn.addEventListener("click", stopRecording);
+if (DOM.recordBtn) DOM.recordBtn.addEventListener("click", startRecording);
+if (DOM.stopBtn) DOM.stopBtn.addEventListener("click", stopRecording);
 
 /* ==========================================================================
    6. In-Browser 16 kHz Mono WAV Conversion & Assessment Upload
    ========================================================================== */
 async function handleRecordingComplete() {
-  // Immediately release hardware microphone tracks to turn off recording light
   if (mediaStream) {
     mediaStream.getTracks().forEach(track => track.stop());
     mediaStream = null;
@@ -356,14 +367,13 @@ async function handleRecordingComplete() {
   }
 
   setState(AppState.CHECKING);
-  DOM.checkingTitle.textContent = "Checking your pronunciation...";
-  DOM.checkingSub.textContent = "Analyzing acoustic waveform against phonetic reference";
+  if (DOM.checkingTitle) DOM.checkingTitle.textContent = "Checking your pronunciation...";
+  if (DOM.checkingSub) DOM.checkingSub.textContent = "Analyzing acoustic waveform against phonetic reference";
 
-  // Warm-up timeout hint for slow model downloads/initialization
   checkingTimerId = setTimeout(() => {
     if (currentState === AppState.CHECKING) {
-      DOM.checkingTitle.textContent = "First run loads the model...";
-      DOM.checkingSub.textContent = "This can take a minute while neural weights load into CPU memory. Please wait.";
+      if (DOM.checkingTitle) DOM.checkingTitle.textContent = "First run loads the model...";
+      if (DOM.checkingSub) DOM.checkingSub.textContent = "This can take a minute while neural weights load into CPU memory. Please wait.";
     }
   }, 8000);
 
@@ -394,7 +404,6 @@ async function handleRecordingComplete() {
     await loadHistory();
     setState(AppState.RESULT);
 
-    // Keep hidden pre/div in sync for headless compatibility
     if (DOM.resultPre) DOM.resultPre.textContent = JSON.stringify(data, null, 2);
     if (DOM.statusDiv) DOM.statusDiv.textContent = `Assessed: ${data.overall_score}%`;
 
@@ -470,127 +479,129 @@ async function convertTo16kHzMonoWav(blob) {
    7. Result Rendering (Animated Score Ring, Chips, Feedback)
    ========================================================================== */
 function renderResults(data) {
+  if (!DOM.scoreNumber || !DOM.scoreRingFill) return;
   const score = Math.round(data.overall_score || 0);
   DOM.scoreNumber.textContent = score;
 
-  // Animate circular score ring
   const offset = SCORE_CIRCUMFERENCE * (1 - score / 100);
   DOM.scoreRingFill.style.strokeDashoffset = offset;
 
-  // Color & verdict mapping
   const scoreCard = document.querySelector(".score-card");
-  scoreCard.classList.remove("score-high", "score-medium", "score-low");
-
-  if (score >= 70) {
-    scoreCard.classList.add("score-high");
-    DOM.scoreVerdict.textContent = "Great Pronunciation!";
-  } else if (score >= 40) {
-    scoreCard.classList.add("score-medium");
-    DOM.scoreVerdict.textContent = "Good Effort — Getting Closer";
-  } else {
-    scoreCard.classList.add("score-low");
-    DOM.scoreVerdict.textContent = "Needs Practice";
+  if (scoreCard) {
+    scoreCard.classList.remove("score-high", "score-medium", "score-low");
+    if (score >= 70) {
+      scoreCard.classList.add("score-high");
+      DOM.scoreVerdict.textContent = "Great Pronunciation!";
+    } else if (score >= 40) {
+      scoreCard.classList.add("score-medium");
+      DOM.scoreVerdict.textContent = "Good Effort — Getting Closer";
+    } else {
+      scoreCard.classList.add("score-low");
+      DOM.scoreVerdict.textContent = "Needs Practice";
+    }
   }
 
-  // Render per-word breakdown cards & sound chips
-  DOM.wordsContainer.innerHTML = "";
-  const words = data.words || [];
+  if (DOM.wordsContainer) {
+    DOM.wordsContainer.innerHTML = "";
+    const words = data.words || [];
 
-  words.forEach(w => {
-    const card = document.createElement("div");
-    card.className = "word-card";
+    words.forEach(w => {
+      const card = document.createElement("div");
+      card.className = "word-card";
 
-    const header = document.createElement("div");
-    header.className = "word-card-header";
+      const header = document.createElement("div");
+      header.className = "word-card-header";
 
-    const wScore = Math.round(w.score || 0);
-    const pillClass = wScore >= 70 ? "pill-high" : (wScore >= 40 ? "pill-medium" : "pill-low");
-    header.innerHTML = `
-      <span class="word-name">${w.word}</span>
-      <span class="word-score-pill ${pillClass}">${wScore}%</span>
-    `;
-    card.appendChild(header);
+      const wScore = Math.round(w.score || 0);
+      const pillClass = wScore >= 70 ? "pill-high" : (wScore >= 40 ? "pill-medium" : "pill-low");
+      header.innerHTML = `
+        <span class="word-name">${w.word}</span>
+        <span class="word-score-pill ${pillClass}">${wScore}%</span>
+      `;
+      card.appendChild(header);
 
-    // Phoneme chips row
-    const chipsRow = document.createElement("div");
-    chipsRow.className = "phoneme-chips-row";
+      const chipsRow = document.createElement("div");
+      chipsRow.className = "phoneme-chips-row";
 
-    (w.phonemes || []).forEach(p => {
-      const chip = document.createElement("span");
-      chip.className = `phone-chip ${p.correct ? "chip-correct" : "chip-wrong"}`;
+      (w.phonemes || []).forEach(p => {
+        const chip = document.createElement("span");
+        chip.className = `phone-chip ${p.correct ? "chip-correct" : "chip-wrong"}`;
 
-      if (p.correct) {
-        chip.textContent = `/${p.expected}/`;
-      } else if (p.expected && p.spoken) {
-        chip.innerHTML = `/${p.expected}/ <span class="chip-arrow" aria-hidden="true">&rarr;</span> /${p.spoken}/`;
-      } else if (p.expected) {
-        chip.textContent = `[missing /${p.expected}/]`;
-      } else {
-        chip.textContent = `[extra /${p.spoken}/]`;
-      }
-      chipsRow.appendChild(chip);
+        if (p.correct) {
+          chip.textContent = `/${p.expected}/`;
+        } else if (p.expected && p.spoken) {
+          chip.innerHTML = `/${p.expected}/ <span class="chip-arrow" aria-hidden="true">&rarr;</span> /${p.spoken}/`;
+        } else if (p.expected) {
+          chip.textContent = `[missing /${p.expected}/]`;
+        } else {
+          chip.textContent = `[extra /${p.spoken}/]`;
+        }
+        chipsRow.appendChild(chip);
+      });
+
+      card.appendChild(chipsRow);
+      DOM.wordsContainer.appendChild(card);
     });
+  }
 
-    card.appendChild(chipsRow);
-    DOM.wordsContainer.appendChild(card);
-  });
+  if (DOM.feedbackList) {
+    DOM.feedbackList.innerHTML = "";
+    const tips = data.feedback || ["Great pronunciation!"];
+    tips.forEach(tip => {
+      const li = document.createElement("li");
+      li.textContent = tip;
+      DOM.feedbackList.appendChild(li);
+    });
+  }
 
-  // Render coaching feedback sentences
-  DOM.feedbackList.innerHTML = "";
-  const tips = data.feedback || ["Great pronunciation!"];
-  tips.forEach(tip => {
-    const li = document.createElement("li");
-    li.textContent = tip;
-    DOM.feedbackList.appendChild(li);
-  });
-
-  // Telemetry timing
-  if (data.timing) {
-    const t = data.timing;
-    DOM.timingDisplay.textContent =
-      `Latency: ${t.total_sec}s (Reference: ${t.reference_sec}s, Recognizer: ${t.recognizer_sec}s, Scorer: ${t.scoring_sec}s)`;
-  } else {
-    DOM.timingDisplay.textContent = "";
+  if (DOM.timingDisplay) {
+    if (data.timing) {
+      const t = data.timing;
+      DOM.timingDisplay.textContent =
+        `Latency: ${t.total_sec}s (Reference: ${t.reference_sec}s, Recognizer: ${t.recognizer_sec}s, Scorer: ${t.scoring_sec}s)`;
+    } else {
+      DOM.timingDisplay.textContent = "";
+    }
   }
 }
 
-DOM.tryAgainBtn.addEventListener("click", () => {
-  setState(AppState.READY);
-});
+if (DOM.tryAgainBtn) {
+  DOM.tryAgainBtn.addEventListener("click", () => {
+    setState(AppState.READY);
+  });
+}
 
 /* ==========================================================================
    8. History List Management
    ========================================================================== */
 async function loadHistory() {
+  if (!DOM.historyTable || !DOM.historyTbody) return;
   try {
     const res = await fetch("/api/progress");
     if (!res.ok) return;
     const attempts = await res.json();
 
-    DOM.historyCount.textContent = `${attempts.length} attempt${attempts.length === 1 ? "" : "s"}`;
-
     if (!attempts || attempts.length === 0) {
-      DOM.historyEmpty.classList.remove("hidden");
+      if (DOM.historyEmpty) DOM.historyEmpty.classList.remove("hidden");
       DOM.historyTable.classList.add("hidden");
       return;
     }
 
-    DOM.historyEmpty.classList.add("hidden");
+    if (DOM.historyEmpty) DOM.historyEmpty.classList.add("hidden");
     DOM.historyTable.classList.remove("hidden");
 
-    DOM.historyTbody.innerHTML = attempts.map(row => {
+    DOM.historyTbody.innerHTML = attempts.slice(0, 10).map(row => {
       const score = Math.round(row.overall_score || 0);
       const badgeClass = score >= 70 ? "badge-high" : (score >= 40 ? "badge-medium" : "badge-low");
-      
-      // Clean UTC timestamp string
+
       let dateStr = row.created_at || "";
       if (dateStr.length > 16) dateStr = dateStr.slice(5, 16).replace("T", " ");
 
       return `
         <tr>
           <td><small class="muted-text">${dateStr}</small></td>
-          <td><strong>${row.language}</strong></td>
-          <td>${row.target_text}</td>
+          <td><span class="lang-pill">${row.language}</span></td>
+          <td><strong>${row.target_text}</strong></td>
           <td><span class="score-badge ${badgeClass}">${score}%</span></td>
         </tr>
       `;

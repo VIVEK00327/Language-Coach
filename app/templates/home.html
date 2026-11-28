@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Language Coach — Master Pronunciation with Sound-by-Sound AI{% endblock %}
+
+{% block content %}
+<div class="home-container">
+  <!-- 1. Hero Section -->
+  <section class="hero-section">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span>Next-Generation Speech Phonetics</span>
+    </div>
+
+    <h1 class="hero-title">
+      Speak with confidence<br>
+      <span class="gradient-text">in any language.</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Master native-like articulation with phone-by-phone AI feedback. Powered by local acoustic models, weighted phonetic distance, and zero cloud dependencies.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/practice" class="btn btn-primary btn-lg">
+        <span>Start Practicing</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      <a href="#how-it-works" class="btn btn-secondary btn-lg">
+        <span>See How It Works</span>
+      </a>
+    </div>
+
+    <!-- Decorative Animated Waveform Illustration -->
+    <div class="hero-waveform-card" aria-hidden="true">
+      <svg class="hero-wave-svg" viewBox="0 0 800 160" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.8" />
+            <stop offset="50%" stop-color="#7c3aed" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.8" />
+          </linearGradient>
+        </defs>
+        <!-- Animated sine waves -->
+        <path class="wave-path wave-1" d="M 0,80 C 100,20 200,140 300,80 C 400,20 500,140 600,80 C 700,20 800,140 900,80 L 900,160 L 0,160 Z" fill="url(#waveGradient)" opacity="0.15"></path>
+        <path class="wave-path wave-2" d="M 0,80 C 150,140 250,20 400,80 C 550,140 650,20 800,80 L 800,160 L 0,160 Z" fill="url(#waveGradient)" opacity="0.25"></path>
+        <path class="wave-stroke" d="M 0,80 C 50,30 100,130 150,80 C 200,30 250,130 300,80 C 350,30 400,130 450,80 C 500,30 550,130 600,80 C 650,30 700,130 750,80 C 800,30 850,130 900,80" fill="none" stroke="url(#waveGradient)" stroke-width="3"></path>
+      </svg>
+      <div class="waveform-overlay-chips">
+        <span class="chip-sample chip-green">/ʃ/ matched</span>
+        <span class="chip-sample chip-blue">16 kHz mono PCM</span>
+        <span class="chip-sample chip-amber">/s/ ➔ /ʃ/ detected</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Language Selection Cards -->
+  <section class="languages-section" aria-labelledby="languages-heading">
+    <div class="section-header">
+      <h2 id="languages-heading" class="section-heading">Supported Languages</h2>
+      <p class="section-subheading">Targeted curriculums focused on the exact phonetic contrasts that challenge foreign learners.</p>
+    </div>
+
+    <div class="languages-grid">
+      <!-- English Card -->
+      <article class="lang-card">
+        <div class="lang-card-header">
+          <div class="lang-script-badge">English</div>
+          <span class="lang-tag">22 Practice Items</span>
+        </div>
+        <div class="lang-greeting" lang="en">"Hello"</div>
+        <p class="lang-desc">
+          Focus on sibilants, dental fricatives, and fluid vowel distinctions (<strong>/θ/, /ð/, /ʃ/, /v/, /w/</strong>).
+        </p>
+        <div class="lang-footer">
+          <a href="/practice?lang=english" class="btn-text">
+            <span>Practice English</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Hindi Card -->
+      <article class="lang-card">
+        <div class="lang-card-header">
+          <div class="lang-script-badge">हिन्दी</div>
+          <span class="lang-tag">22 Practice Items</span>
+        </div>
+        <div class="lang-greeting devanagari" lang="hi">"नमस्ते"</div>
+        <p class="lang-desc">
+          Master retroflex vs. dental articulation and aspirated plosives (<strong>ट, ठ, ड, ढ, ड़, ख, घ, झ, भ</strong>).
+        </p>
+        <div class="lang-footer">
+          <a href="/practice?lang=hindi" class="btn-text">
+            <span>Practice Hindi</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Sanskrit Card -->
+      <article class="lang-card">
+        <div class="lang-card-header">
+          <div class="lang-script-badge">संस्कृतम्</div>
+          <span class="lang-tag">22 Practice Items</span>
+        </div>
+        <div class="lang-greeting devanagari" lang="sa">"नमो नमः"</div>
+        <p class="lang-desc">
+          Authentic classical chanting phonetics: visarga (<strong>ः</strong>), anusvara (<strong>ं</strong>), and vowel lengths (<strong>ह्रस्व/दीर्घ</strong>).
+        </p>
+        <div class="lang-footer">
+          <a href="/practice?lang=sanskrit" class="btn-text">
+            <span>Practice Sanskrit</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- French Card -->
+      <article class="lang-card">
+        <div class="lang-card-header">
+          <div class="lang-script-badge">Français</div>
+          <span class="lang-tag">22 Practice Items</span>
+        </div>
+        <div class="lang-greeting" lang="fr">"Bonjour"</div>
+        <p class="lang-desc">
+          Conquer nasal vowels (<strong>an, in, on, un</strong>) and the French uvular fricative / consonant (<strong>/ʁ/</strong>).
+        </p>
+        <div class="lang-footer">
+          <a href="/practice?lang=french" class="btn-text">
+            <span>Practice French</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 3. How It Works Section -->
+  <section id="how-it-works" class="how-section" aria-labelledby="how-heading">
+    <div class="section-header">
+      <h2 id="how-heading" class="section-heading">How It Works</h2>
+      <p class="section-subheading">A diagnostic approach designed around how the human vocal tract learns.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3 class="step-title">Select &amp; Listen</h3>
+        <p class="step-desc">
+          Pick a phrase from beginner to advanced tiers. Use the integrated native speech synthesis to internalize the target sound.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3 class="step-title">Record with Live Waveform</h3>
+        <p class="step-desc">
+          Speak naturally into your microphone. Watch real-time acoustic waveforms and volume meters. Converted locally to 16 kHz WAV.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3 class="step-title">Sound-by-Sound Feedback</h3>
+        <p class="step-desc">
+          Get an overall score (0–100) and color-coded phonetic chips pinpointing exactly where your pronunciation hit or missed.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Bottom CTA -->
+  <section class="cta-banner-card">
+    <div class="cta-content">
+      <h2>Ready to improve your pronunciation?</h2>
+      <p>Jump right into the practice studio. No login or cloud setup needed.</p>
+      <a href="/practice" class="btn btn-primary btn-lg">Launch Practice Studio</a>
+    </div>
+  </section>
+</div>
+{% endblock %}
